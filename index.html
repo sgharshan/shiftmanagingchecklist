@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shift Record</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Daily Shift and Records Manager</h1>
+        <div class="section">
+            <h2>Staff Information</h2>
+            <div id="staffInputs" class="grid-container">
+                <div class="grid-item">
+                    <label for="staffName1">Staff 1 Name:</label>
+                    <input type="text" id="staffName1" placeholder="Enter name">
+                    <label for="shiftStart1">Shift Start:</label>
+                    <input type="time" id="shiftStart1">
+                    <label for="shiftEnd1">Shift End:</label>
+                    <input type="time" id="shiftEnd1">
+                </div>
+                <div class="grid-item">
+                    <label for="staffName2">Staff 2 Name:</label>
+                    <input type="text" id="staffName2" placeholder="Enter name">
+                    <label for="shiftStart2">Shift Start:</label>
+                    <input type="time" id="shiftStart2">
+                    <label for="shiftEnd2">Shift End:</label>
+                    <input type="time" id="shiftEnd2">
+                </div>
+                <div class="grid-item">
+                    <label for="staffName2">Staff 3 Name:</label>
+                    <input type="text" id="staffName3" placeholder="Enter name">
+                    <label for="shiftStart3">Shift Start:</label>
+                    <input type="time" id="shiftStart3">
+                    <label for="shiftEnd2">Shift End:</label>
+                    <input type="time" id="shiftEnd3">
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <h2>Scratch Card Information</h2>
+            <div id="scratchInputs" class="grid-container">
+                <!-- Dynamically generated inputs for scratch cards -->
+
+                <div class="scratch-row">
+                    <label>Scratch Card 01 (£5):</label>
+                    <input type="number" id="scratchOpening1" placeholder="Opening">
+                    <input type="number" id="scratchClosing1" placeholder="Closing">
+                </div>
+                <div class="scratch-row">
+                    <label>Scratch Card 02 (£5):</label>
+                    <input type="number" id="scratchOpening2" placeholder="Opening">
+                    <input type="number" id="scratchClosing2" placeholder="Closing">
+                </div>
+                <div class="scratch-row">
+                    <label>Scratch Card 03 (£5):</label>
+                    <input type="number" id="scratchOpening3" placeholder="Opening">
+                    <input type="number" id="scratchClosing3" placeholder="Closing">
+                </div>
+                <div class="scratch-row">
+                    <label>Scratch Card 04 (£5):</label>
+                    <input type="number" id="scratchOpening4" placeholder="Opening">
+                    <input type="number" id="scratchClosing4" placeholder="Closing">
+                </div>
+                <div class="scratch-row">
+                    <label>Scratch Card 05 (£5):</label>
+                    <input type="number" id="scratchOpening5" placeholder="Opening">
+                    <input type="number" id="scratchClosing5" placeholder="Closing">
+                </div>
+                <div class="scratch-row">
+                    <label>Scratch Card 06 (£5):</label>
+                    <input type="number" id="scratchOpening6" placeholder="Opening">
+                    <input type="number" id="scratchClosing6" placeholder="Closing">
+                </div>
+                <div class="scratch-row">
+                    <label>Scratch Card 07 (£5):</label>
+                    <input type="number" id="scratchOpening7" placeholder="Opening">
+                    <input type="number" id="scratchClosing7" placeholder="Closing">
+                </div>
+                <div class="scratch-row">
+                    <label>Scratch Card 08 (£5):</label>
+                    <input type="number" id="scratchOpening8" placeholder="Opening">
+                    <input type="number" id="scratchClosing8" placeholder="Closing">
+                </div>
+                <div class="scratch-row">
+                    <label>Scratch Card 09 (£3):</label>
+                    <input type="number" id="scratchOpening9" placeholder="Opening">
+                    <input type="number" id="scratchClosing9" placeholder="Closing">
+                </div>
+                <div class="scratch-row">
+                    <label>Scratch Card 10 (£3):</label>
+                    <input type="number" id="scratchOpening10" placeholder="Opening">
+                    <input type="number" id="scratchClosing10" placeholder="Closing">
+                </div>
+                <div class="scratch-row">
+                    <label>Scratch Card 11 (£3):</label>
+                    <input type="number" id="scratchOpening11" placeholder="Opening">
+                    <input type="number" id="scratchClosing11" placeholder="Closing">
+                </div>
+                <div class="scratch-row">
+                    <label>Scratch Card 12 (£3):</label>
+                    <input type="number" id="scratchOpening12" placeholder="Opening">
+                    <input type="number" id="scratchClosing12" placeholder="Closing">
+                </div>
+                <div class="scratch-row">
+                    <label>Scratch Card 13 (£3):</label>
+                    <input type="number" id="scratchOpening13" placeholder="Opening">
+                    <input type="number" id="scratchClosing13" placeholder="Closing">
+                </div>
+                <div class="scratch-row">
+                    <label>Scratch Card 14 (£2):</label>
+                    <input type="number" id="scratchOpening14" placeholder="Opening">
+                    <input type="number" id="scratchClosing14" placeholder="Closing">
+                </div>
+                <div class="scratch-row">
+                    <label>Scratch Card 15 (£2):</label>
+                    <input type="number" id="scratchOpening15" placeholder="Opening">
+                    <input type="number" id="scratchClosing15" placeholder="Closing">
+                </div>
+                <div class="scratch-row">
+                    <label>Scratch Card 16 (£2):</label>
+                    <input type="number" id="scratchOpening16" placeholder="Opening">
+                    <input type="number" id="scratchClosing16" placeholder="Closing">
+                </div>
+                <div class="scratch-row">
+                    <label>Scratch Card 17 (£2):</label>
+                    <input type="number" id="scratchOpening17" placeholder="Opening">
+                    <input type="number" id="scratchClosing17" placeholder="Closing">
+                </div>
+                <div class="scratch-row">
+                    <label>Scratch Card 18 (£2):</label>
+                    <input type="number" id="scratchOpening18" placeholder="Opening">
+                    <input type="number" id="scratchClosing18" placeholder="Closing">
+                </div>
+                <div class="scratch-row">
+                    <label>Scratch Card 19 (£1):</label>
+                    <input type="number" id="scratchOpening19" placeholder="Opening">
+                    <input type="number" id="scratchClosing19" placeholder="Closing">
+                </div>
+                <div class="scratch-row">
+                    <label>Scratch Card 20 (£1):</label>
+                    <input type="number" id="scratchOpening20" placeholder="Opening">
+                    <input type="number" id="scratchClosing20" placeholder="Closing">
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <h2>Temperature Monitoring</h2>
+            <div class="grid-container">
+                <div class="grid-item">
+                    <label for="freezerTemp1">Freezer 1 Temp (°C):</label>
+                    <input type="number" id="freezerTemp1" placeholder="Freezer Temp1">
+                </div>
+                <div class="grid-item">
+                    <label for="freezerTemp2">Freezer 2 Temp (°C):</label>
+                    <input type="number" id="freezerTemp2" placeholder="freezerTemp2">
+                </div>
+                <div class="grid-item">
+                    <label for="chillerTemp">Chiller Temp (°C):</label>
+                    <input type="number" id="chillerTemp" placeholder="chillerTemp">
+                </div>
+                <div class="grid-item">
+                    <label for="fridgeTemp1">Drinks Fridge Temp (°C):</label>
+                    <input type="number" id="fridgeTemp1" placeholder="fridgeTemp1">
+                </div>
+                <div class="grid-item">
+                    <label for="fridgeTemp2">Beer and Alcohol Fridge Temp (°C):</label>
+                    <input type="number" id="fridgeTemp2" placeholder="fridgeTemp2">
+                </div>
+            </div>
+        </div>
+        <button type="button" onclick="generatePDF()">Generate PDF</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
