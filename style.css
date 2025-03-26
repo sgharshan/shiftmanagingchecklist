@@ -89,3 +89,25 @@ button:hover {
         font-size: 14px;
     }
 }
+
+
+.shift-duration {
+    margin-top: 5px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+
+#summaryData p {
+    font-size: 16px;
+}
+
+textarea#managerNotes {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+    margin-top: 10px;
+}

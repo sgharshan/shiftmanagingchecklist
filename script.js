@@ -1,3 +1,38 @@
+
+function calculateShiftDuration(startId, endId, displayId) {
+    const start = document.getElementById(startId).value;
+    const end = document.getElementById(endId).value;
+    const display = document.getElementById(displayId);
+
+    if (start && end) {
+        const startTime = new Date(`1970-01-01T${start}:00`);
+        const endTime = new Date(`1970-01-01T${end}:00`);
+        const diffMs = endTime - startTime;
+
+        if (diffMs >= 0) {
+            const hours = Math.floor(diffMs / (1000 * 60 * 60));
+            const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+            display.textContent = `Duration: ${hours}h ${minutes}m`;
+            display.style.color = '#28a745';
+        } else {
+            display.textContent = `Invalid time range`;
+            display.style.color = 'red';
+        }
+    } else {
+        display.textContent = '';
+    }
+}
+
+['1', '2', '3'].forEach(i => {
+    document.getElementById(`shiftStart${i}`).addEventListener('input', () => {
+        calculateShiftDuration(`shiftStart${i}`, `shiftEnd${i}`, `duration${i}`);
+    });
+    document.getElementById(`shiftEnd${i}`).addEventListener('input', () => {
+        calculateShiftDuration(`shiftStart${i}`, `shiftEnd${i}`, `duration${i}`);
+    });
+});
+
+
 async function generatePDF() {
     try {
         const { jsPDF } = window.jspdf;
@@ -74,16 +109,15 @@ for (let i = 1; i <= 20; i++) {
     const scratchClosing = parseInt(document.getElementById(`scratchClosing${i}`)?.value) || 0;
     const totalScratchSold = scratchOpening - scratchClosing;
 
-    let pricePerCard = 0;
-    if (i >= 1 && i <= 8) {
-        pricePerCard = 5;
-    } else if (i >= 7 && i <= 13) {
-        pricePerCard = 3;
-    } else if (i >= 12 && i <= 18) {
-        pricePerCard = 2;
-    } else if (i >= 17 && i <= 20) {
-        pricePerCard = 1;
-    }
+    
+const priceMap = {
+    1: 5, 2: 5, 3: 5, 4: 5, 5: 5, 6: 5, 7: 5, 8: 5,
+    9: 3, 10: 3, 11: 3, 12: 3, 13: 3,
+    14: 2, 15: 2, 16: 2, 17: 2, 18: 2,
+    19: 1, 20: 1
+};
+
+    const pricePerCard = priceMap[i] || 0;
 
     const totalAmount = totalScratchSold * pricePerCard;
     totalSales += totalAmount; // Add to total sales
@@ -137,10 +171,192 @@ doc.autoTable({
         yPosition += 10;
         doc.text(`  Beer and Alcohol Fridge: ${fridgeTemp2} °C`, 10, yPosition);
 
+        
+        // Notes Section
+        yPosition += 10;
+        if (yPosition + 30 > pageHeight) doc.addPage(), (yPosition = 10);
+        doc.setFontSize(12);
+        doc.text('Manager Notes:', 10, yPosition);
+        yPosition += 10;
+
+        const notes = document.getElementById('managerNotes')?.value.trim() || 'N/A';
+        const wrappedNotes = doc.splitTextToSize(notes, 180);
+        doc.text(wrappedNotes, 10, yPosition);
+
         // Save the PDF
         doc.save('Shift_Record_Updated.pdf');
     } catch (error) {
         console.error("Error generating PDF:", error);
         alert("An error occurred while generating the PDF. Please check the console for more details.");
+    }
+}
+
+
+
+function updateSummary() {
+    let totalSales = 0;
+    const priceMap = {
+        1: 5, 2: 5, 3: 5, 4: 5, 5: 5, 6: 5, 7: 5, 8: 5,
+        9: 3, 10: 3, 11: 3, 12: 3, 13: 3,
+        14: 2, 15: 2, 16: 2, 17: 2, 18: 2,
+        19: 1, 20: 1
+    };
+
+    for (let i = 1; i <= 20; i++) {
+        const open = parseInt(document.getElementById(`scratchOpening${i}`).value) || 0;
+        const close = parseInt(document.getElementById(`scratchClosing${i}`).value) || 0;
+        const sold = open - close;
+        const price = priceMap[i] || 0;
+        totalSales += sold * price;
+    }
+    document.getElementById('totalSales').textContent = `£${totalSales}`;
+
+    let totalMinutes = 0;
+    for (let i = 1; i <= 3; i++) {
+        const start = document.getElementById(`shiftStart${i}`).value;
+        const end = document.getElementById(`shiftEnd${i}`).value;
+        if (start && end) {
+            const startTime = new Date(`1970-01-01T${start}:00`);
+            const endTime = new Date(`1970-01-01T${end}:00`);
+            const diff = (endTime - startTime) / 60000;
+            if (diff > 0) totalMinutes += diff;
+        }
+    }
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = Math.floor(totalMinutes % 60);
+    document.getElementById('totalHours').textContent = `${hours}h ${minutes}m`;
+    updateSalesChart();
+}
+
+// Event listeners for summary updates
+['1','2','3'].forEach(i => {
+    ['shiftStart', 'shiftEnd'].forEach(type => {
+        document.getElementById(`${type}${i}`).addEventListener('input', updateSummary);
+    });
+});
+
+for (let i = 1; i <= 20; i++) {
+    document.getElementById(`scratchOpening${i}`).addEventListener('input', updateSummary);
+    document.getElementById(`scratchClosing${i}`).addEventListener('input', updateSummary);
+}
+
+
+
+function saveFormData() {
+    const inputs = document.querySelectorAll('input, textarea');
+    const data = {};
+    inputs.forEach(input => {
+        data[input.id] = input.value;
+    });
+    localStorage.setItem('shiftFormData', JSON.stringify(data));
+}
+
+function loadFormData() {
+    const data = JSON.parse(localStorage.getItem('shiftFormData') || '{}');
+    Object.keys(data).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = data[id];
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadFormData();
+    updateSummary();
+
+    document.querySelectorAll('input, textarea').forEach(input => {
+        input.addEventListener('input', () => {
+            saveFormData();
+            updateSummary();
+        });
+    });
+});
+
+function exportToJSON() {
+    const inputs = document.querySelectorAll('input, textarea');
+    const data = {};
+    inputs.forEach(input => {
+        data[input.id] = input.value;
+    });
+
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'shift_record.json';
+    link.click();
+}
+
+function importFromJSON() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+
+    input.onchange = e => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = event => {
+            const json = JSON.parse(event.target.result);
+            for (const id in json) {
+                const el = document.getElementById(id);
+                if (el) el.value = json[id];
+            }
+            updateSummary();
+            saveFormData();
+        };
+        reader.readAsText(file);
+    };
+
+    input.click();
+}
+let salesChart;
+
+function updateSalesChart() {
+    const labels = [];
+    const data = [];
+
+    const priceMap = {
+        1: 5, 2: 5, 3: 5, 4: 5, 5: 5, 6: 5, 7: 5, 8: 5,
+        9: 3, 10: 3, 11: 3, 12: 3, 13: 3,
+        14: 2, 15: 2, 16: 2, 17: 2, 18: 2,
+        19: 1, 20: 1
+    };
+
+    for (let i = 1; i <= 20; i++) {
+        const opening = parseInt(document.getElementById(`scratchOpening${i}`).value) || 0;
+        const closing = parseInt(document.getElementById(`scratchClosing${i}`).value) || 0;
+        const sold = opening - closing;
+        labels.push(`Card ${i} (£${priceMap[i]})`);
+        data.push(sold);
+    }
+
+    if (salesChart) {
+        salesChart.data.labels = labels;
+        salesChart.data.datasets[0].data = data;
+        salesChart.update();
+    } else {
+        const ctx = document.getElementById('salesChart').getContext('2d');
+        salesChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Scratch Cards Sold',
+                    data: data,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
     }
 }
