@@ -34,5 +34,5 @@ The **Daily Shift and Records Manager** is a lightweight browser-based applicati
 
 Giridar Harshan Sri Kantharaja
 BSc Computer Science • Software Engineer • Student @ University of Plymouth
-  📧 giridar.srikantharaja@student.plymouth.ac.uk
-  🔗 www.linkedin.com/in/srikantharaja-giridar-harshan
+📧 giridar.srikantharaja@student.plymouth.ac.uk
+🔗 www.linkedin.com/in/srikantharaja-giridar-harshan
