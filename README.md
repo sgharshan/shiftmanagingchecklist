@@ -27,7 +27,7 @@ The **Daily Shift and Records Manager** is a lightweight browser-based applicati
 
 - **HTML5** for structure  
 - **CSS3** for styling and responsive layout  
-- **Vanilla JavaScript (ES6)** for core logic  
+- **JavaScript** for core logic  
 - **Chart.js** for sales data visualization  
 - **localStorage API** for auto-save  
 - **FileReader & Blob** for JSON I/O  
