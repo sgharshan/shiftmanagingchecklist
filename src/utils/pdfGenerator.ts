@@ -1,13 +1,6 @@
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 import type { DailyRecord } from '../types';
-
-// Add type definition for autotable
-declare module 'jspdf' {
-    interface jsPDF {
-        autoTable: (options: any) => jsPDF;
-    }
-}
 
 export function generatePDF(data: DailyRecord) {
     const doc = new jsPDF();
@@ -41,7 +34,7 @@ export function generatePDF(data: DailyRecord) {
         return [`Staff ${index + 1}`, shift.name || 'N/A', shift.startTime || 'N/A', shift.endTime || 'N/A', duration];
     });
 
-    doc.autoTable({
+    autoTable(doc, {
         head: [['Staff', 'Name', 'Start', 'End', 'Duration']],
         body: staffData,
         startY: yPosition,
@@ -94,7 +87,7 @@ export function generatePDF(data: DailyRecord) {
 
     scratchData.push(['Total', '', '', '', '', `£${totalSales}`]);
 
-    doc.autoTable({
+    autoTable(doc, {
         head: [['Card', 'Opening', 'Closing', 'Sold', 'Price', 'Total']],
         body: scratchData,
         startY: yPosition,
@@ -119,7 +112,7 @@ export function generatePDF(data: DailyRecord) {
         ['Alcohol Fridge', data.temperatures.alcoholFridge.morning, data.temperatures.alcoholFridge.afternoon, data.temperatures.alcoholFridge.closing],
     ];
 
-    doc.autoTable({
+    autoTable(doc, {
         head: [['Appliance', 'Morning (°C)', 'Afternoon (°C)', 'Closing (°C)']],
         body: tempRows,
         startY: yPosition,
